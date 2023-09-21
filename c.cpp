@@ -106,7 +106,10 @@ struct Truck
 {
     int p, f, t;
     float c, vol, vel;
-    Truck() {}
+    Truck()
+    {
+        reset_cur();
+    }
     Truck(int _p, int _f, int _t, int _c, int _vol, int _vel)
     {
         p = _p;
@@ -115,6 +118,7 @@ struct Truck
         c = _c;
         vol = _vol;
         vel = _vel;
+        reset_cur();
     }
     void input()
     {
@@ -126,6 +130,41 @@ struct Truck
     {
         os << "Truck: (" << t.p << " " << t.f << " " << t.t << " " << t.c << " " << t.vol << " " << t.vel << ")";
         return os;
+    }
+
+    // dinamic value
+    int cur_p;
+    float cur_c, cur_vol;
+    void reset_cur()
+    {
+        cur_p = p;
+        cur_c = 0;
+        cur_vol = 0;
+    }
+    // Function with checking
+    bool checkTime(int curTime)
+    {
+        return (f <= curTime) && (curTime <= t);
+    }
+    bool checkOrder(Order &order)
+    {
+        return (cur_c + order.d <= c) && (cur_vol + order.v <= vol);
+    }
+    void addOrder(Order &order)
+    {
+        if (checkOrder(order))
+        {
+            cur_c += order.d;
+            cur_vol += order.v;
+        }
+        else
+        {
+            throw "Order is too big!";
+        }
+    }
+    int calTimeMove(int distance)
+    {
+        return ceil(1.0 * distance / vel);
     }
 };
 struct Order
@@ -157,6 +196,25 @@ struct Order
     {
         os << "Order: (" << o.s << " " << o.e << " " << o.d << " " << o.v << " " << o.sp << " " << o.sd << " " << o.ep << " " << o.lp << " " << o.ed << " " << o.ld << ")";
         return os;
+    }
+    // Function checking
+    bool checkTimeIn(int curTime)
+    {
+        curTime += sp;
+        return (ep <= curTime) && (curTime <= lp);
+    }
+    bool checkTimeOut(int curTime)
+    {
+        curTime += sd;
+        return (ed <= curTime) && (curTime <= ld);
+    }
+    bool checkHubIn(int curHub)
+    {
+        return (curHub == s);
+    }
+    bool checkHubOut(int curHub)
+    {
+        return (curHub == e);
     }
 };
 

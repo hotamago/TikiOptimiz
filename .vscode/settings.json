@@ -2,6 +2,7 @@
     "files.associations": {
         "*.ejs": "vue-html",
         "chrono": "cpp",
-        "iosfwd": "cpp"
+        "iosfwd": "cpp",
+        "exception": "cpp"
     }
 }
