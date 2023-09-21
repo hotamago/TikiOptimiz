@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "*.ejs": "vue-html",
+        "chrono": "cpp",
+        "iosfwd": "cpp"
+    }
+}
